@@ -18,12 +18,15 @@ module.exports = {
 		//Load json file and parse
 		let rawdata = fs.readFileSync('./bot/users.json');
 		let users = JSON.parse(rawdata);
+		
+		console.log(users)
 
     //The person executing the command has a registered address
     if (users['addresses'][message.author.id] != undefined)
     {
 			//For some reason algorand sdk doesn't provide a method to get the ASA balance of a certain address :/
 			//Instead, get balances of all the addresses and loop through
+	    console.log("g$balance Address exists")
       coup = await algorandUtil.getAssetBalances(coupId, indexerClient)
 			sleep(waitTimeInMs)
 			eure = await algorandUtil.getAssetBalances(eureId, indexerClient)
@@ -31,6 +34,7 @@ module.exports = {
 			swee = await algorandUtil.getAssetBalances(sweeId, indexerClient)
 			sleep(waitTimeInMs)
 			haas = await algorandUtil.getAssetBalances(haasId, indexerClient)
+	    		console.log("Got lists of ASA balances")
 
 			address = users['addresses'][message.author.id]
 
@@ -40,7 +44,8 @@ module.exports = {
 			eureBal = algorandUtil.getAddressASABalance(address, eure)
 			sweeBal = algorandUtil.getAddressASABalance(address, swee)
 			haasBal = algorandUtil.getAddressASABalance(address, haas)
-
+			console.log("Got the balances")
+	    
 			message.reply(`\nCoupon(:ticket:): ${coupBal}\nEure(:lemon:): ${eureBal}\nWatermelon(:watermelon:): ${sweeBal}\nHaas (:avocado:): ${haasBal}`)
     }
 
