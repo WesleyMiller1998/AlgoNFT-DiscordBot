@@ -11,7 +11,7 @@ module.exports = {
     return optedIn;
   },
 
-  getAddressAssets: function(address) {
+  getAddressAssets: async function(address, indexerClient) {
     const assetIds = [281003266, 281003863, 281004528, 281005704];
     assets = {};
 

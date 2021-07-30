@@ -27,7 +27,7 @@ module.exports = {
 	    console.log("g$balance Address exists")
 		address = users['addresses'][message.author.id]
 
-		assets = algorandUtil.getAddressAssets(address)
+		assets = await algorandUtil.getAddressAssets(address, indexerClient);
 		console.log("Got lists of ASA balances")
 		
 		coupBal = assets[coupId] ? assets[coupId] : 0;
