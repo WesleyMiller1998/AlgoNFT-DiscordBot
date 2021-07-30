@@ -24,29 +24,19 @@ module.exports = {
     //The person executing the command has a registered address
     if (users['addresses'][message.author.id] != undefined)
     {
-			//For some reason algorand sdk doesn't provide a method to get the ASA balance of a certain address :/
-			//Instead, get balances of all the addresses and loop through
 	    console.log("g$balance Address exists")
-      coup = await algorandUtil.getAssetBalances(coupId, indexerClient)
-			sleep(waitTimeInMs)
-			eure = await algorandUtil.getAssetBalances(eureId, indexerClient)
-			sleep(waitTimeInMs)
-			swee = await algorandUtil.getAssetBalances(sweeId, indexerClient)
-			sleep(waitTimeInMs)
-			haas = await algorandUtil.getAssetBalances(haasId, indexerClient)
-	    		console.log("Got lists of ASA balances")
+		address = users['addresses'][message.author.id]
 
-			address = users['addresses'][message.author.id]
-
-			//Function that loops through to get the actual balance of an address
-			//DRY blah blah blah..... there's no point in DRYing this, it works fine already and performance gains are minimal
-			coupBal = algorandUtil.getAddressASABalance(address, coup)
-			eureBal = algorandUtil.getAddressASABalance(address, eure)
-			sweeBal = algorandUtil.getAddressASABalance(address, swee)
-			haasBal = algorandUtil.getAddressASABalance(address, haas)
-			console.log("Got the balances")
+		assets = algorandUtil.getAddressAssets(address)
+		console.log("Got lists of ASA balances")
+		
+		coupBal = assets[coupId] ? assets[coupId] : 0;
+		eureBal = assets[eureId] ? assets[eureId] : 0;
+		sweeBal = assets[sweeId] ? assets[sweeId] : 0;
+		haasBal = assets[haasId] ? assets[haasId] : 0;
+		console.log("Got the balances")
 	    
-			message.reply(`\nCoupon(:ticket:): ${coupBal}\nEure(:lemon:): ${eureBal}\nWatermelon(:watermelon:): ${sweeBal}\nHaas (:avocado:): ${haasBal}`)
+		message.reply(`\nCoupon(:ticket:): ${coupBal}\nEure(:lemon:): ${eureBal}\nWatermelon(:watermelon:): ${sweeBal}\nHaas (:avocado:): ${haasBal}`)
     }
 
     //They haven't registered an address, tell them to do so

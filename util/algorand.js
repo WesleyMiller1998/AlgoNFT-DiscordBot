@@ -11,23 +11,22 @@ module.exports = {
     return optedIn;
   },
 
-  getAssetBalances: async function (assetId, indexerClient)
-  {
-    assetBalances = await indexerClient.lookupAssetBalances(assetId, -1, 1000000000000000, true ).do();
+  getAddressAssets: function(address) {
+    const assetIds = [281003266, 281003863, 281004528, 281005704];
+    assets = {};
 
-    return assetBalances;
-  },
-
-  getAddressASABalance: function (address, balances)
-  {
-    for (var i = 0; i < balances['balances'].length; i++)
+    accountInfo = await indexerClient.lookupAccountByID(address).do();
+    if (accountInfo['account'].hasOwnProperty('assets')) 
     {
-      if (balances['balances'][i]['address'] == address)
-      {
-        return balances['balances'][i]['amount'];
-      }
+        accountInfo['account']['assets'].forEach(element => 
+        {
+            if (assetIds.includes(element['asset-id'])) 
+            {
+                assets[element['asset-id']] = element['amount'];
+            }
+        });
     }
 
-    return 0;
+    return assets;
   }
 }
